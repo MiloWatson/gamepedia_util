@@ -24,7 +24,7 @@ pages = this_template.embeddedin()
 
 tabs_templates = ['TDRight', 'TabsDynamic', 'TD']
 years = ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
-months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'September', 'October', 'November',
+months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
           'December']
 
 # pages = [

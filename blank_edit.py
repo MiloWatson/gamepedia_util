@@ -1,11 +1,11 @@
 from log_into_wiki import *
 
-site = login('me', 'rollerchampions-esports')  # Set wiki
+site = login('me', 'cod-esports')  # Set wiki
 
 limit = -1
 lmt = 0
 
-pages = site.pages['Category:Pages with script errors'].embeddedin()
+pages = site.pages['Template:SBWWII/Player'].embeddedin()
 
 for page in pages:
     if lmt == limit:
