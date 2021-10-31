@@ -4,7 +4,7 @@ import mwparserfromhell, re, html
 site = login('me', 'halo-esports')  # Set wiki
 summary = 'Converting old tournament results templates to new'  # Set summary
 
-limit = 1
+limit = -1
 
 pages = site.pages['Template:TournamentResultsStart'].embeddedin(namespace=0)
 

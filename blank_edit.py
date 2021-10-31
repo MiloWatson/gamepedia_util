@@ -5,7 +5,7 @@ site = login('me', 'cod-esports')  # Set wiki
 limit = -1
 lmt = 0
 
-pages = site.pages['Template:SBWWII/Player'].embeddedin()
+pages = site.pages['Template:Infobox Tournament'].embeddedin()
 
 for page in pages:
     if lmt == limit:

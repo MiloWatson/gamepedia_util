@@ -1,6 +1,6 @@
-from river_mwclient.esports_client import EsportsClient
-from river_mwclient.auth_credentials import AuthCredentials
-from river_mwclient.template_modifier import TemplateModifierBase
+from mwrogue.esports_client import EsportsClient
+from mwrogue.auth_credentials import AuthCredentials
+from mwcleric.template_modifier import TemplateModifierBase
 
 credentials = AuthCredentials(user_file="me")
 site = EsportsClient('cod-esports', credentials=credentials)

@@ -1,17 +1,11 @@
-from river_mwclient.esports_client import EsportsClient
-from river_mwclient.auth_credentials import AuthCredentials
-from river_mwclient.gamepedia_client import GamepediaClient
-from river_mwclient.errors import EsportsCacheKeyError
+from log_into_wiki import *
+import mwparserfromhell as mwp
 
-credentials = AuthCredentials(user_file='me')
+site = login('me', 'cod-esports')  # Set wiki
 
-site = EsportsClient('cod-esports', credentials=credentials)
+page = site.pages['User:Ispoonz/TemplateTester']
 
-print(site.cache.get('Team', 'og', 'link'))
-
-try:
-    print(site.cache.get('Team', 'og', 'not_a_real_length'))
-except EsportsCacheKeyError as e:
-    print(e)
-
-site.client.pages['User:Ispoonz/login test'].save('Hello World')
+text = page.text()
+wikitext = mwp.parse(text)
+for template in wikitext.filter_templates(recursive=False):
+    print(template.get('prize').value.strip().upper())

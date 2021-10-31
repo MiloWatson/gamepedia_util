@@ -12,6 +12,7 @@ pages = site.pages['Template:TournamentResultsStart'].embeddedin(namespace=0)
 regex = r"===(.+?)===\n(.+?) (?:.+?)\n"
 regexref = r"===(.+?)===\n(.+?) (?:.+?)<ref>(.+?)</ref>\n"
 myr = r"===(?: |)\n(.+?)\n{{TournamentResultsStart"
+regex2 = r"==(?:.+?)==(?: |)\n{{TournamentResultsStart"  # no prize regex
 blank_lines = r"^\s+$"
 
 lmt = 0
@@ -21,7 +22,7 @@ lmt = 0
 
 
 def process_start():
-    match = re.search(myr, str(wikitext))
+    match = re.search(regex2, str(wikitext))
     # print(match)
     if match:
         """"
@@ -56,6 +57,7 @@ def process_start():
                 if checker:
                     template.add('noprize', 'yes' + linelist)
                 else:
+                    template.add('prizeunit', 'USD')
                     template.add('prize', 'yes' + linelist)
 
             if template.name.matches('TournamentResultsEnd'):

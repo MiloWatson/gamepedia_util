@@ -4,18 +4,13 @@ from mwcleric.page_modifier import PageModifierBase
 
 credentials = AuthCredentials(user_file="me")
 site = EsportsClient('cod-esports', credentials=credentials)
-summary = 'Fixing old player page end'
+summary = 'Fixing tournament display for player media'
 
 
 class PageModifier(PageModifierBase):
     def update_plaintext(self, text):
-        text = text.replace('<gallery>\n</gallery>\n\n== External Links ==\n\n== Redirects ==\n{{PlayerPageRedirects}}'
-                            '\n== References ==\n<references />', '{{PlayerProfileGallery}}\n{{PlayerPageEnd}}')
+        text = text.replace('MLG World Finals 2015', '2016 CWL NA Stage 1 Regular Season')
         return text
 
 
-# PageModifier(site, page_list=site.pages_using('TournamentResults'), summary=summary).run()
-
-# PageModifier(site, page_list=site.pages_using('RosterChangeData/Line'), summary=summary).run()
-
-PageModifier(site, page_list=site.pages_using('PlayerPageRedirects'), summary=summary).run()
+PageModifier(site, page_list=site.pages_using('PlayerImageMetadata'), summary=summary).run()
