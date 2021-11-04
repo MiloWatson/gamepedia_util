@@ -60,7 +60,7 @@ class TemplateModifier(TemplateModifierBase):
         return
         '''
 
-
+'''
 TemplateModifier(site, 'RosterChangeData/Line', summary=summary).run()
 TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
 TemplateModifier(site, 'TournamentResults/Line', summary=summary).run()
@@ -72,8 +72,8 @@ TemplateModifier(site, 'Infobox Tournament', summary=summary).run()
 TemplateModifier(site, 'CircuitPointsLine', summary=summary).run()
 TemplateModifier(site, 'TeamRoster', summary=summary).run()
 '''
-TemplateModifier(site, 'Team', summary=summary, startat_page='Call of Duty League Championship 2020').run()
+TemplateModifier(site, 'Bracket', summary=summary, ).run()
+'''
+TemplateModifier(site, 'Team', summary=summary).run()
 TemplateModifier(site, 'StandingsLine', summary=summary).run()
 '''
-
-
