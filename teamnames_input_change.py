@@ -6,9 +6,12 @@ credentials = AuthCredentials(user_file="bot")
 site = EsportsClient('cod-esports', credentials=credentials)
 summary = 'DAL -> DALE prep for name change'
 
-# set entries to be changed here (always uppercase)
+# set current input used for team that needs to be changed (must be uppercase)
 old = 'DAL'
 old_long = 'DALLAS'
+# don't touch old_inputs
+old_inputs = {old, old_long}
+# set new input to be used for team
 new = 'DALE'
 new_long = 'Dallas Empire'
 
@@ -24,45 +27,63 @@ class TemplateModifier(TemplateModifierBase):
                 template.remove('team')
                 template.add('team', new_long)
             return
+        if template.name == 'RCPlayer':
+            if template.has('loaned_to'):
+                if template.get('loaned_to').value.strip().upper() in old_inputs:
+                    template.remove('loaned_to')
+                    template.add('loaned_to', new)
+            if template.has('loaned_from'):
+                if template.get('loaned_from').value.strip().upper() in old_inputs:
+                    template.remove('loaned_from')
+                    template.add('loaned_from', new)
+            return
         if template.has('team1') and template.has('team2'):
-            if template.get('team1').value.strip().upper() == old:
+            if template.get('team1').value.strip().upper() in old_inputs:
                 template.remove('team1')
                 template.add('team1', new, before='team2')
-            if template.get('team2').value.strip().upper() == old:
+            if template.get('team2').value.strip().upper() in old_inputs:
                 template.remove('team2')
                 template.add('team2', new, before='team1score')
             return
         if template.name == 'Infobox Tournament':
             if template.has('host'):
-                if template.get('host').value.strip().upper() == old:
+                if template.get('host').value.strip().upper() in old_inputs:
                     template.remove('host')
                     template.add('host', new, before='sponsor')
             if template.has('first'):
-                if template.get('first').value.strip().upper() == old:
+                if template.get('first').value.strip().upper() in old_inputs:
                     template.remove('first')
                     template.add('first', new, before='second')
-                elif template.get('second').value.strip().upper() == old:
+                elif template.get('second').value.strip().upper() in old_inputs:
                     template.remove('second')
                     template.add('second', new, before='third')
-                elif template.get('third').value.strip().upper() == old:
+                elif template.get('third').value.strip().upper() in old_inputs:
                     template.remove('third')
                     template.add('third', new, before='fourth')
-                elif template.get('fourth').value.strip().upper() == old:
+                elif template.get('fourth').value.strip().upper() in old_inputs:
                     template.remove('fourth')
                     template.add('fourth', new)
             return
-
-        '''
+        if template.name == 'ExternalContent/Line':
+            if template.has('teams'):
+                teams = template.get('teams').value.strip().upper()
+                team_list = teams.split(',')
+                if old in team_list or old_long in team_list:
+                    modified_list = [new if team in old_inputs else team for team in team_list]
+                    teams_string = ','.join(modified_list)
+                    template.remove('teams')
+                    template.add('teams', teams_string, before='publication')
+            return
         if template.name == 'Team' or template.name == 'team' or template.name == 'StandingsLine':
-            if template.get(1).value.strip().upper() == old:
+            if template.get(1).value.strip().upper() in old_inputs:
                 template.remove(1)
                 template.add(1, new)
-        return
-        '''
+            return
+
 
 '''
 TemplateModifier(site, 'RosterChangeData/Line', summary=summary).run()
-TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
+TemplateModifier(site, 'RCPlayer', summary=summary).run()
 TemplateModifier(site, 'TournamentResults/Line', summary=summary).run()
 TemplateModifier(site, 'PlayerImageMetadata', summary=summary).run()
 TemplateModifier(site, 'PlayerStickers', summary=summary).run()
@@ -72,7 +93,7 @@ TemplateModifier(site, 'Infobox Tournament', summary=summary).run()
 TemplateModifier(site, 'CircuitPointsLine', summary=summary).run()
 TemplateModifier(site, 'TeamRoster', summary=summary).run()
 '''
-TemplateModifier(site, 'Bracket', summary=summary, ).run()
+TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
 '''
 TemplateModifier(site, 'Team', summary=summary).run()
 TemplateModifier(site, 'StandingsLine', summary=summary).run()
