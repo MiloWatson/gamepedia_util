@@ -1,6 +1,7 @@
 from mwrogue.esports_client import EsportsClient
 from mwrogue.auth_credentials import AuthCredentials
 from mwcleric.template_modifier import TemplateModifierBase
+from string import ascii_uppercase
 
 credentials = AuthCredentials(user_file="bot")
 site = EsportsClient('cod-esports', credentials=credentials)
@@ -74,6 +75,36 @@ class TemplateModifier(TemplateModifierBase):
                     template.remove('teams')
                     template.add('teams', teams_string, before='publication')
             return
+        if template.name == 'AutoStandings':
+            if template.has('teamlist'):
+                teams = template.get('teamlist').value.strip().upper()
+                team_list = teams.split(',')
+                if old in team_list or old_long in team_list:
+                    modified_list = [new if team in old_inputs else team for team in team_list]
+                    teams_string = ','.join(modified_list)
+                    template.remove('teamlist')
+                    template.add('teamlist', teams_string, before='places')
+            if template.has('finalorder'):
+                teams = template.get('finalorder').value.strip().upper()
+                team_list = teams.split(',')
+                if old in team_list or old_long in team_list:
+                    modified_list = [new if team in old_inputs else team for team in team_list]
+                    teams_string = ','.join(modified_list)
+                    template.remove('finalorder')
+                    template.add('finalorder', teams_string, before='places')
+            return
+        if template.name == 'TournamentGroups':
+            for char in ascii_uppercase:
+                print(str(char) + ': ' + template.get('Group ' + str(char)))
+                if template.has('Group ' + str(char)):
+                    teams = template.get('Group ' + str(char)).value.strip().upper()
+                    team_list = teams.split(',')
+                    if old in team_list or old_long in team_list:
+                        modified_list = [new if team in old_inputs else team for team in team_list]
+                        teams_string = ','.join(modified_list)
+                        template.remove('Group ' + str(char))
+                        template.add('Group ' + str(char), teams_string)
+            return
         if template.name == 'Team' or template.name == 'team' or template.name == 'StandingsLine':
             if template.get(1).value.strip().upper() in old_inputs:
                 template.remove(1)
@@ -92,8 +123,10 @@ TemplateModifier(site, 'MatchSchedule', summary=summary).run()
 TemplateModifier(site, 'Infobox Tournament', summary=summary).run()
 TemplateModifier(site, 'CircuitPointsLine', summary=summary).run()
 TemplateModifier(site, 'TeamRoster', summary=summary).run()
-'''
 TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
+TemplateModifier(site, 'AutoStandings', summary=summary).run()
+'''
+TemplateModifier(site, 'TournamentGroups', summary=summary, startat_page='Data:Call of Duty League/2021 Season/Stage 2').run()
 '''
 TemplateModifier(site, 'Team', summary=summary).run()
 TemplateModifier(site, 'StandingsLine', summary=summary).run()

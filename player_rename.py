@@ -16,4 +16,4 @@ class TemplateModifier(TemplateModifierBase):
                 template.add('player', 'TeeP', before='role')
 
 
-TemplateModifier(site, 'RCPlayer', summary=summary, startat_page='Data:News/2019-11-24').run()
+TemplateModifier(site, 'RCPlayer', summary=summary).run()
