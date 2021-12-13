@@ -28,7 +28,7 @@ class TemplateModifier(TemplateModifierBase):
                 template.remove('team')
                 template.add('team', new_long)
             return
-        if template.name == 'RCPlayer':
+        if template.name.matches('RCPlayer'):
             if template.has('loaned_to'):
                 if template.get('loaned_to').value.strip().upper() in old_inputs:
                     template.remove('loaned_to')
@@ -46,7 +46,7 @@ class TemplateModifier(TemplateModifierBase):
                 template.remove('team2')
                 template.add('team2', new, before='team1score')
             return
-        if template.name == 'Infobox Tournament':
+        if template.name.matches('Infobox Tournament'):
             if template.has('host'):
                 if template.get('host').value.strip().upper() in old_inputs:
                     template.remove('host')
@@ -65,7 +65,7 @@ class TemplateModifier(TemplateModifierBase):
                     template.remove('fourth')
                     template.add('fourth', new)
             return
-        if template.name == 'ExternalContent/Line':
+        if template.name.matches('ExternalContent/Line'):
             if template.has('teams'):
                 teams = template.get('teams').value.strip().upper()
                 team_list = teams.split(',')
@@ -75,7 +75,7 @@ class TemplateModifier(TemplateModifierBase):
                     template.remove('teams')
                     template.add('teams', teams_string, before='publication')
             return
-        if template.name == 'AutoStandings':
+        if template.name.matches('AutoStandings'):
             if template.has('teamlist'):
                 teams = template.get('teamlist').value.strip().upper()
                 team_list = teams.split(',')
@@ -93,41 +93,38 @@ class TemplateModifier(TemplateModifierBase):
                     template.remove('finalorder')
                     template.add('finalorder', teams_string, before='places')
             return
-        if template.name == 'TournamentGroups':
+        if template.name.matches('TournamentGroups'):
             for char in ascii_uppercase:
-                print(str(char) + ': ' + template.get('Group ' + str(char)))
-                if template.has('Group ' + str(char)):
-                    teams = template.get('Group ' + str(char)).value.strip().upper()
+                group = 'Group ' + char
+                if template.has(group):
+                    teams = template.get(group).value.strip().upper()
                     team_list = teams.split(',')
                     if old in team_list or old_long in team_list:
                         modified_list = [new if team in old_inputs else team for team in team_list]
                         teams_string = ','.join(modified_list)
-                        template.remove('Group ' + str(char))
-                        template.add('Group ' + str(char), teams_string)
+                        template.remove(group)
+                        template.add(group, teams_string)
             return
-        if template.name == 'Team' or template.name == 'team' or template.name == 'StandingsLine':
+        if template.name.matches('Team') or template.name.matches('team') or template.name.matches('StandingsLine'):
             if template.get(1).value.strip().upper() in old_inputs:
                 template.remove(1)
                 template.add(1, new)
             return
 
 
-'''
-TemplateModifier(site, 'RosterChangeData/Line', summary=summary).run()
-TemplateModifier(site, 'RCPlayer', summary=summary).run()
-TemplateModifier(site, 'TournamentResults/Line', summary=summary).run()
-TemplateModifier(site, 'PlayerImageMetadata', summary=summary).run()
-TemplateModifier(site, 'PlayerStickers', summary=summary).run()
-TemplateModifier(site, 'TeamRosterPhotoMetadata', summary=summary).run()
-TemplateModifier(site, 'MatchSchedule', summary=summary).run()
-TemplateModifier(site, 'Infobox Tournament', summary=summary).run()
-TemplateModifier(site, 'CircuitPointsLine', summary=summary).run()
-TemplateModifier(site, 'TeamRoster', summary=summary).run()
-TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
-TemplateModifier(site, 'AutoStandings', summary=summary).run()
-'''
-TemplateModifier(site, 'TournamentGroups', summary=summary, startat_page='Data:Call of Duty League/2021 Season/Stage 2').run()
-'''
-TemplateModifier(site, 'Team', summary=summary).run()
-TemplateModifier(site, 'StandingsLine', summary=summary).run()
-'''
+# TemplateModifier(site, 'RosterChangeData/Line', summary=summary).run()
+# TemplateModifier(site, 'RCPlayer', summary=summary).run()
+# TemplateModifier(site, 'TournamentResults/Line', summary=summary).run()
+# TemplateModifier(site, 'PlayerImageMetadata', summary=summary).run()
+# TemplateModifier(site, 'PlayerStickers', summary=summary).run()
+# TemplateModifier(site, 'TeamRosterPhotoMetadata', summary=summary).run()
+# TemplateModifier(site, 'MatchSchedule', summary=summary).run()
+# TemplateModifier(site, 'Infobox Tournament', summary=summary).run()
+# TemplateModifier(site, 'CircuitPointsLine', summary=summary).run()
+# TemplateModifier(site, 'TeamRoster', summary=summary).run()
+# TemplateModifier(site, 'ExternalContent/Line', summary=summary).run()
+# TemplateModifier(site, 'AutoStandings', summary=summary).run()
+# TemplateModifier(site, 'Team', summary=summary).run()
+# TemplateModifier(site, 'StandingsLine', summary=summary).run()
+TemplateModifier(site, 'TournamentGroups', summary=summary).run()
+
